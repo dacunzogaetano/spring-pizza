@@ -15,10 +15,10 @@ public class PizzaController {
 	@Autowired
 	private PizzaRepository repo;
 	
+	
 	@GetMapping
 	public String pizze (Model model)
 	{
 		return "pizze";
 	}
-
 }
