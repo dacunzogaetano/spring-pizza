@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="fragments/risorse :: risorse-head"></th:block>
+	<title>Book edit</title>
+</head>
+
+<body>
+	<nav th:replace="fragments/navbar :: navbar('edit')"></nav>
+	<div class="container">
+
+		<h1 th:text="${pizza.id != null} ? 'Edit pizza' : 'New pizza'"></h1>
+		<hr />
+		<!-- form che gestisce l'attributo book -->
+
+		<form id="form-pizza" th:object="${pizza}" th:action="@{/save}" method="POST">
+			<ul>
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}">
+				</li>
+			</ul>
+			<!--  campo nascosto per l'id -->
+			<input type="hidden" th:field="*{id}">
+			<div class="mb-3">
+				<label class="form-label" for="Name">Name</label>
+				<input type="text" id="Name" class="form-control" th:field="*{Name}" th:errorClass="is-invalid">
+				<div th:if="${#fields.hasErrors('Name')}" class="invalid-feedback">
+					<ul>
+						<li th:each="err : ${#fields.errors('Name')}" th:text="${err}">
+					</ul>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="Description">Descrizione</label>
+				<input type="text" id="Description" class="form-control" th:field="*{Description}"
+					th:errorClass="is-invalid">
+				<div th:if="${#fields.hasErrors('Description')}" class="invalid-feedback">
+					<ul>
+						<li th:each="err : ${#fields.errors('Description')}" th:text="${err}">
+					</ul>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="Price">Prezzo</label>
+				<input type="text" id="Price" class="form-control" th:field="*{Price}" th:errorClass="is-invalid">
+				<div th:if="${#fields.hasErrors('Price')}" class="invalid-feedback">
+					<ul>
+						<li th:each="err : ${#fields.errors('Price')}" th:text="${err}">
+					</ul>
+				</div>
+
+				<div>
+					<button type="submit" class="btn btn-primary">Save</button>
+					<a class="btn btn-primary" href="/">Cancel</a>
+				</div>
+		</form>
+	</div>
+
+	<th:block th:replace="fragments/risorse :: risorse-js"></th:block>
+</body>
+
+</html>

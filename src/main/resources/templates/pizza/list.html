@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="fragments/risorse :: risorse-head"></th:block>
+	<title>Pizze</title>
+</head>
+
+<body>
+	<nav th:replace="fragments/navbar :: navbar('list')"></nav>
+	<div class="container">
+		<!--  messaggi alert  -->
+		<th:block th:if="${successMessage != null && successMessage != ''}">
+			<div class="alert alert-success" th:text="${successMessage}"></div>
+		</th:block>
+		<h1>Pizze</h1>
+		<hr />
+		<!-- link che mi porta al controller che restituisce la form -->
+		<a class="btn btn-primary" th:href="@{/add}">Add a pizza</a>
+		<!--  tabella con tutte le pizze -->
+		<table class="table" th:if="${pizze.size() > 0}">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Descrizione</th>
+					<th>Prezzo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${pizze}">
+					<td th:text="${p.name}">Nome</td>
+					<td th:text="${p.description}">Descrizione</td>
+					<td th:text="${p.price}">Prezzo</td>
+						
+					<td>
+						<a class="btn btn-primary" th:href="@{|/delete/${p.id}|}" title="Delete"
+							onclick="return confirm('Are your sure?')">
+							<i class="fa-solid fa-trash-can"></i>
+						</a>
+						<a class="btn btn-primary" th:href="@{|/edit/${p.id}|}" title="Edit">
+							<i class="fa-solid fa-pen-to-square"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- se la lista di pizze è vuota -->
+		<div class="alert alert-info my-5" th:unless="${pizze.size() > 0}">
+			<h3>Non hai inserito alcuna pizza</h3>
+		</div>
+	</div>
+
+	<th:block th:replace="fragments/risorse :: risorse-js"></th:block>
+</body>
+
+</html>
