@@ -25,7 +25,7 @@ public class Pizza {
 	private String description;
 	
 	@NotNull(message = "Purtroppo la pizza non é gratis")
-	@Min(value = 0)
+	@Min(value = 0, message = "Un prezzo negativo, sei serio??")
 	private Double price;
 	
 	

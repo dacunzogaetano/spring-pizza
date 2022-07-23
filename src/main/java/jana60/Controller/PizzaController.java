@@ -33,7 +33,7 @@ public class PizzaController {
 		return "/pizza/home";
 	}
 
-	@GetMapping("/pizza/list")
+	@GetMapping("/list")
 	public String pizzeList(Model model) {
 		model.addAttribute("pizze", repo.findAll());
 		return "/pizza/list";
@@ -52,7 +52,7 @@ public class PizzaController {
 		boolean validateName = true;
 		if (formPizza.getId() != null) { // sono in edit non in create
 			Pizza pizzaBeforeUpdate = repo.findById(formPizza.getId()).get();
-			if (pizzaBeforeUpdate.getName().equals(formPizza.getName())) {
+			if (pizzaBeforeUpdate.getName().equalsIgnoreCase(formPizza.getName())) {
 				validateName = false;
 			}
 		}
@@ -74,19 +74,18 @@ public class PizzaController {
 				model.addAttribute("errorMessage", "Non é possibile salvare questa pizza");
 				return "/pizza/edit";
 			}
-			return "redirect:/"; // non cercare un template, ma fai la HTTP redirect a quel path
+			return "redirect:/list"; // non cercare un template, ma fai la HTTP redirect a quel path
 		}
 	}
 
-	// request a http://localhost:8080/delete/2
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer pizzaId, RedirectAttributes ra) {
 		Optional<Pizza> result = repo.findById(pizzaId);
 		if (result.isPresent()) {
 			// repo.deleteById(pizzaId);
 			repo.delete(result.get());
-			ra.addFlashAttribute("successMessage", "La pizza " + result.get().getName() + " é stata cancellata!");
-			return "redirect:/";
+			ra.addFlashAttribute("successMessage", "La pizza " + result.get().getName() + " é stata cancellata! Mi auguro tu abbia avuto un buon motivo... ");
+			return "redirect:/list";
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza non é presente nel Database");
 		}
@@ -96,7 +95,6 @@ public class PizzaController {
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer pizzaId, Model model) {
 		Optional<Pizza> result = repo.findById(pizzaId);
-		// controllo se la pizza con quell'id è presente
 		if (result.isPresent()) {
 			// preparo il template con al form passandogli la pizza trovato su db
 			model.addAttribute("pizza", result.get());

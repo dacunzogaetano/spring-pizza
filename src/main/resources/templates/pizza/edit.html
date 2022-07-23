@@ -9,24 +9,22 @@
 <body>
 	<nav th:replace="fragments/navbar :: navbar('edit')"></nav>
 	<div class="container">
-
-		<h1 th:text="${pizza.id != null} ? 'Edit pizza' : 'New pizza'"></h1>
-		<hr />
-		<!-- form che gestisce l'attributo book -->
-
+		<p>
+		<h1 th:text="${pizza.id != null} ? 'Modifica la pizza' : 'Aggiungi una pizza (senza frutta cortesemente)'"></h1>
+		<p>
+			<!-- form che gestisce l'attributo book -->
 		<form id="form-pizza" th:object="${pizza}" th:action="@{/save}" method="POST">
 			<ul>
-				<li th:each="err : ${#fields.allErrors()}" th:text="${err}">
-				</li>
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
 			</ul>
 			<!--  campo nascosto per l'id -->
 			<input type="hidden" th:field="*{id}">
 			<div class="mb-3">
-				<label class="form-label" for="Name">Name</label>
+				<label class="form-label" for="Name">Nome</label>
 				<input type="text" id="Name" class="form-control" th:field="*{Name}" th:errorClass="is-invalid">
 				<div th:if="${#fields.hasErrors('Name')}" class="invalid-feedback">
 					<ul>
-						<li th:each="err : ${#fields.errors('Name')}" th:text="${err}">
+						<li th:each="err : ${#fields.errors('Name')}" th:text="${err}"></li>
 					</ul>
 				</div>
 			</div>
@@ -36,23 +34,25 @@
 					th:errorClass="is-invalid">
 				<div th:if="${#fields.hasErrors('Description')}" class="invalid-feedback">
 					<ul>
-						<li th:each="err : ${#fields.errors('Description')}" th:text="${err}">
+						<li th:each="err : ${#fields.errors('Description')}" th:text="${err}"></li>
 					</ul>
 				</div>
 			</div>
 			<div class="mb-3">
-				<label class="form-label" for="Price">Prezzo</label>
-				<input type="text" id="Price" class="form-control" th:field="*{Price}" th:errorClass="is-invalid">
+				<label class="form-label" for="Price">Prezzo (€)</label>
+				<input type="number" id="Price" class="form-control" th:field="*{Price}" th:errorClass="is-invalid">
 				<div th:if="${#fields.hasErrors('Price')}" class="invalid-feedback">
 					<ul>
-						<li th:each="err : ${#fields.errors('Price')}" th:text="${err}">
+						<li th:each="err : ${#fields.errors('Price')}" th:text="${err}"></li>
 					</ul>
 				</div>
-
-				<div>
-					<button type="submit" class="btn btn-primary">Save</button>
-					<a class="btn btn-primary" href="/">Cancel</a>
-				</div>
+			</div>
+			<p>
+			<div>
+				<button type="submit" class="btn btn-success"
+					th:text="${pizza.id != null} ? 'Modifica' : 'Salva'"></button>
+				<a class="btn btn-secondary" href="/list">Torna indietro</a>
+			</div>
 		</form>
 	</div>
 

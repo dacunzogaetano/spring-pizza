@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
   <body>
-  <nav th:fragment="navbar(current)" class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <nav th:fragment="navbar(current)" class="navbar navbar-expand-lg" style="background-color: #dc3545;">
 	  <div class="container-fluid">
 	    <a class="navbar-brand">
 				<img src="/images/pizzalogo.jpg"
@@ -15,11 +15,11 @@
 	      <ul class="navbar-nav">
 	        
 	        <li class="nav-item">
-	          <a class="nav-link" th:classAppend="${current == 'home'} ? active : not-active" href="/">Home</a>
+	          <a class="nav-link" th:classAppend="${current == 'home'} ? active : not-active" href="/">Homepage</a>
 	        </li>
 	        
 	        <li class="nav-item">
-	          <a class="nav-link" th:classAppend="${current == 'list'} ? active : not-active" href="/pizza/list">List</a>
+	          <a class="nav-link" th:classAppend="${current == 'list'} ? active : not-active" href="/list">Le nostre pizze</a>
 	        </li>
 	     
 	      </ul>
