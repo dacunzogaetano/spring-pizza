@@ -1,11 +1,15 @@
 package jana60.Model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,7 +30,11 @@ public class Pizza {
 	
 	@NotNull(message = "Purtroppo la pizza non é gratis")
 	@Min(value = 0, message = "Un prezzo negativo, sei serio??")
+	@Max(value = 50, message = "Le pizze cosi care stanno da Briatore")
 	private Double price;
+	
+	@ManyToMany
+	private List<Ingredienti> ingredienti;
 	
 	
 	//get and set
@@ -55,6 +63,13 @@ public class Pizza {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	public List<Ingredienti> getIngredienti() {
+		return ingredienti;
+	}
+	public void setIngredienti(List<Ingredienti> ingredienti) {
+		this.ingredienti = ingredienti;
+	}
+	
 	
 	
 	

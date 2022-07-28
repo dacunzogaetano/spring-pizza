@@ -25,6 +25,7 @@
 					<th>Nome</th>
 					<th>Descrizione</th>
 					<th>Prezzo (€)</th>
+					<th>Ingredienti</th>
 					<th>Modifiche</th>
 				</tr>
 			</thead>
@@ -33,13 +34,17 @@
 					<td th:text="${p.name}">Nome</td>
 					<td th:text="${p.description}">Descrizione</td>
 					<td th:text="${p.price}">Prezzo</td>
-
+					<td>
+						<ul>
+							<li th:each="i : ${p.ingredienti}" th:text="${i.name}"></li>
+						</ul>
+					</td>
 					<td>
 
-						<a class="btn btn-primary" th:href="@{|/edit/${p.id}|}" title="Modifica">
+						<a class="btn btn-danger" th:href="@{|/edit/${p.id}|}" title="Modifica">
 							<i class="fa-solid fa-pen-to-square"></i>
 						</a>
-						<a class="btn btn-primary" th:href="@{|/delete/${p.id}|}" title="Cancella"
+						<a class="btn btn-warning" th:href="@{|/delete/${p.id}|}" title="Cancella"
 							onclick="return confirm('Sei sicuro?')">
 							<i class="fa-solid fa-trash-can"></i>
 						</a>

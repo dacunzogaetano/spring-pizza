@@ -1,5 +1,6 @@
 package jana60.Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jana60.Model.Pizza;
+import jana60.Repository.IngredientiRepository;
 import jana60.Repository.PizzaRepository;
 
 @Controller
@@ -27,6 +30,9 @@ public class PizzaController {
 
 	@Autowired
 	private PizzaRepository repo;
+
+	@Autowired
+	private IngredientiRepository ingredientiRepo;
 
 	@GetMapping
 	public String home(Model model) {
@@ -42,6 +48,7 @@ public class PizzaController {
 	@GetMapping("/add")
 	public String pizzeForm(Model model) {
 		model.addAttribute("pizza", new Pizza());
+		model.addAttribute("ingredientiList", ingredientiRepo.findAllByOrderByName());
 		return "/pizza/edit";
 	}
 
@@ -65,6 +72,7 @@ public class PizzaController {
 		if (hasErrors) {
 			// se ci sono errori non salvo la pizza su database ma ritorno alla form
 			// precaricata
+			model.addAttribute("ingredientiList", ingredientiRepo.findAllByOrderByName());
 			return "/pizza/edit";
 		} else {
 			// se non ci sono errori salvo la pizza che arriva dalla form
@@ -72,11 +80,14 @@ public class PizzaController {
 				repo.save(formPizza);
 			} catch (Exception e) { // gestisco eventuali eccezioni sql
 				model.addAttribute("errorMessage", "Non é possibile salvare questa pizza");
+				model.addAttribute("ingredientiList", ingredientiRepo.findAllByOrderByName());
 				return "/pizza/edit";
 			}
 			return "redirect:/list"; // non cercare un template, ma fai la HTTP redirect a quel path
 		}
 	}
+
+	
 
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer pizzaId, RedirectAttributes ra) {
@@ -84,7 +95,8 @@ public class PizzaController {
 		if (result.isPresent()) {
 			// repo.deleteById(pizzaId);
 			repo.delete(result.get());
-			ra.addFlashAttribute("successMessage", "La pizza " + result.get().getName() + " é stata cancellata! Mi auguro tu abbia avuto un buon motivo... ");
+			ra.addFlashAttribute("successMessage", "La pizza " + result.get().getName()
+					+ " é stata cancellata! Mi auguro tu abbia avuto un buon motivo... ");
 			return "redirect:/list";
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza non é presente nel Database");
@@ -98,6 +110,7 @@ public class PizzaController {
 		if (result.isPresent()) {
 			// preparo il template con al form passandogli la pizza trovato su db
 			model.addAttribute("pizza", result.get());
+			model.addAttribute("ingredientiList", ingredientiRepo.findAllByOrderByName());
 			return "/pizza/edit";
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza non é presente nel Database");

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="fragments/risorse :: risorse-head"></th:block>
+	<title>Ingredienti</title>
+</head>
+
+<body>
+	<nav th:replace="fragments/navbar :: navbar('ingredienti')"></nav>
+	<div class="container">
+		<h1>Ingredienti</h1>
+		<hr />
+		<div class="col-6">
+			<!-- Inizio Form -->
+			<form id="form-ingredienti" th:object="${newIngredienti}" th:action="@{/ingredienti/save}" method="POST">
+				<input type="hidden" th:field="*{id}">
+				<div class="input-group mb-3 has-validation">
+					<p>Inserisci un nuovo ingrediente &nbsp;</p>
+					<input th:field="*{name}" type="text" class="form-control" th:errorClass="is-invalid">
+					<button class="btn btn-primary" type="submit" id="category-button">Aggiungi</button>
+					<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+						<ul>
+							<li th:each="err : ${#fields.errors('name')}" th:text="${err}">
+						</ul>
+					</div>
+				</div>
+
+			</form>
+			<!--  fine form -->
+			<!--  inizio lista  -->
+			<ul class="list-group" th:if="${ingredienti.size() > 0}">
+				<li class="list-group-item" th:each="ing : ${ingredienti}">
+					<span th:text="${ing.name}"></span>
+					<a class="btn btn-warning" th:href="@{|/ingredienti/delete/${ing.id}|}" title="Cancella">
+						<i class="fa-solid fa-trash-can"></i>
+					</a>
+				</li>
+			</ul>
+
+			<!-- se la lista è vuota -->
+			<div class="alert alert-info my-5" th:unless="${ingredienti.size() > 0}">
+				<h3>Non è stato inserito alcun ingrediente</h3>
+			</div>
+			<!--  fine lista -->
+		</div>
+	</div>
+
+	<th:bock th:replace="fragments/risorse :: risorse-js"></th:bock>
+</body>
+
+</html>
