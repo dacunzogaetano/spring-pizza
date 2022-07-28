@@ -41,9 +41,27 @@ public class PizzaController {
 
 	@GetMapping("/list")
 	public String pizzeList(Model model) {
-		model.addAttribute("pizze", repo.findAll());
+		model.addAttribute("pizze", repo.findAllByOrderByPrice());
 		return "/pizza/list";
 	}
+
+	@GetMapping("/advanced_search")
+	public String advancedSearch() {
+		return "/pizza/search";
+	}
+
+	@GetMapping("/search")
+	  public String search(@RequestParam(name = "queryName") String queryName, Model model) {
+
+	    if (queryName != null && queryName.isEmpty()) {
+	    	queryName = null;
+	    }
+	    
+	    List<Pizza> pizze =
+	            repo.findByNameContainingIgnoreCase(queryName);
+	        model.addAttribute("pizze", pizze);
+	        return "/pizza/list";
+	      }
 
 	@GetMapping("/add")
 	public String pizzeForm(Model model) {
@@ -86,8 +104,6 @@ public class PizzaController {
 			return "redirect:/list"; // non cercare un template, ma fai la HTTP redirect a quel path
 		}
 	}
-
-	
 
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer pizzaId, RedirectAttributes ra) {

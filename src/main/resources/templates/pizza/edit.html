@@ -42,19 +42,19 @@
 					</ul>
 				</div>
 			</div>
-			<p>
+			<p><div class="mb-3">
+				<h4>Ingredienti</h4>
+				<div class="form-check" th:each="ing : ${ingredientiList}">
+				  <input class="form-check-input" th:field="*{ingredienti}" type="checkbox" th:id="|ingredienti_${ing.id}|" th:value="${ing.id}">
+				  <label class="form-check-label" th:for="|ingredienti_${ing.id}|" th:text="${ing.name}"></label>
+				</div>
 			<div>
 				<button type="submit" class="btn btn-success"
 					th:text="${pizza.id != null} ? 'Modifica' : 'Salva'"></button>
 				<a class="btn btn-secondary" href="/list">Torna indietro</a>
 			</div>
 			<p>
-			<div class="mb-3">
-				<h4>Ingredienti</h4>
-				<div class="form-check" th:each="ing : ${ingredientiList}">
-				  <input class="form-check-input" th:field="*{ingredienti}" type="checkbox" th:id="|ingredienti_${ing.id}|" th:value="${ing.id}">
-				  <label class="form-check-label" th:for="|ingredienti_${ing.id}|" th:text="${ing.name}"></label>
-				</div>
+			
 				
 			</div>
 		</form>

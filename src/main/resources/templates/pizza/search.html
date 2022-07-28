@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="fragments/risorse :: risorse-head"></th:block>
+	<title>Ricerca</title>
+</head>
+
+<body>
+	<nav th:replace="fragments/navbar :: navbar('search')"></nav>
+	<div class="container">
+		<form action="/search">
+			Nome Pizza <input class="form-control" type="text" name="queryName">
+			<button>Ricerca</button>
+		</form>
+	</div>
+	<th:bock th:replace="fragments/risorse :: risorse-js"></th:bock>
+</body>
+
+</html>

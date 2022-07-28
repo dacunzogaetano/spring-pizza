@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,14 @@ public class IngredientiController {
 	}
 
 	@PostMapping("/save")
-	public String saveIngredienti(@Valid @ModelAttribute("newIngredienti") Ingredienti formIngredienti, BindingResult br,
-			Model model) {
+	public String saveIngredienti(@Valid @ModelAttribute("newIngredienti") Ingredienti formIngredienti, BindingResult br,Model model) {
+		boolean hasErrors = br.hasErrors();
+		boolean validateName = true;
+		
+		if (validateName && repo.countByName(formIngredienti.getName()) > 0) {
+			br.addError(new FieldError("newIngredienti", "name", "Quest'ingrediente esiste gia"));
+			hasErrors = true;
+		}
 		if (br.hasErrors()) {
 			model.addAttribute("ingredienti", repo.findAllByOrderByName());
 			return "ingredienti/list";
@@ -49,16 +56,17 @@ public class IngredientiController {
 		}
 
 	}
+	
+	
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable("id") Integer ingredientiId, RedirectAttributes ra) {
+	public String delete(@PathVariable("id") Integer ingredientiId) {
 		Optional<Ingredienti> result = repo.findById(ingredientiId);
 		if (result.isPresent()) {
 			// repo.deleteById(ingredientiId);
 			repo.delete(result.get());
-			ra.addFlashAttribute("successMessage", "La pizza " + result.get().getName() + " é stata cancellata! Mi auguro tu abbia avuto un buon motivo... ");
 			return "redirect:/ingredienti";
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La pizza non é presente nel Database");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Non è stato possibile procedere con l'operazione");
 		}
 
 	}
