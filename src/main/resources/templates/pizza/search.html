@@ -8,11 +8,24 @@
 
 <body>
 	<nav th:replace="fragments/navbar :: navbar('search')"></nav>
-	<div class="container">
-		<form action="/search">
+	<div class="container col-6">
+		<br>
+		<form action="/search_name">
 			Nome Pizza <input class="form-control" type="text" name="queryName">
 			<button>Ricerca</button>
 		</form>
+		<br><br>
+		<form action="/search_price">
+			Prezzo Minimo <input class="form-control" type="text" name="queryMin">
+			Prezzo Massimo <input class="form-control" type="text" name="queryMax">
+			<button>Ricerca</button>
+		</form>
+		<br><br>
+		<!-- <form action="/search_ingredienti">
+			Nome Ingrediente <input class="form-control" type="text" name="queryIngrediente">
+			<button>Ricerca</button>
+		</form> !-->
+
 	</div>
 	<th:bock th:replace="fragments/risorse :: risorse-js"></th:bock>
 </body>

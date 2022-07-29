@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jana60.Model.Ingredienti;
 import jana60.Model.Pizza;
 import jana60.Repository.IngredientiRepository;
 import jana60.Repository.PizzaRepository;
@@ -41,7 +42,7 @@ public class PizzaController {
 
 	@GetMapping("/list")
 	public String pizzeList(Model model) {
-		model.addAttribute("pizze", repo.findAllByOrderByPrice());
+		model.addAttribute("pizze", repo.findAll());
 		return "/pizza/list";
 	}
 
@@ -50,18 +51,39 @@ public class PizzaController {
 		return "/pizza/search";
 	}
 
-	@GetMapping("/search")
-	  public String search(@RequestParam(name = "queryName") String queryName, Model model) {
-
-	    if (queryName != null && queryName.isEmpty()) {
+	@GetMapping("/search_name")
+	public String searchName (@RequestParam(name = "queryName") String queryName, Model model) {
+			
+		if (queryName != null && queryName.isEmpty()) {
 	    	queryName = null;
 	    }
-	    
-	    List<Pizza> pizze =
-	            repo.findByNameContainingIgnoreCase(queryName);
-	        model.addAttribute("pizze", pizze);
-	        return "/pizza/list";
-	      }
+		
+		List<Pizza> pizze = repo.findByNameContainingIgnoreCase(queryName);
+		model.addAttribute("pizze", pizze);
+		return "/pizza/list";
+		}
+	
+	@GetMapping("/search_price")
+	public String searchPrice (@RequestParam(name = "queryMin", required=false) Double queryMin,
+			@RequestParam(name = "queryMax", required=false) Double queryMax,Model model) {
+		
+		List<Pizza> pizze = repo.findByPriceBetweenOrderByPrice(queryMin, queryMax);
+		model.addAttribute("pizze", pizze);
+		return "/pizza/list";
+		}
+	
+//	@GetMapping("/search_ingredienti")
+//	public String searchIngredienti (@RequestParam(name = "queryIngrediente") List<Ingredienti> queryIngrediente, Model model) {
+//			
+//		if (queryIngrediente != null && queryIngrediente.isEmpty()) {
+//			queryIngrediente = null;
+//	    }
+//		
+//		List<Pizza> pizze = repo.findByIngredienti(queryIngrediente);
+//		model.addAttribute("pizze", pizze);
+//		return "/pizza/list";
+//		}
+	
 
 	@GetMapping("/add")
 	public String pizzeForm(Model model) {
@@ -133,4 +155,5 @@ public class PizzaController {
 		}
 
 	}
+
 }

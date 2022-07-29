@@ -8,8 +8,8 @@
 
 <body>
 	<nav th:replace="fragments/navbar :: navbar('ingredienti')"></nav>
-	<div class="container ">
-	<th:block th:if="${successMessage != null && successMessage != ''}">
+	<div class="container">
+		<th:block th:if="${successMessage != null && successMessage != ''}">
 			<div class="alert alert-warning" th:text="${successMessage}"></div>
 		</th:block>
 		<h1>Elenco Ingredienti</h1>
@@ -17,12 +17,12 @@
 		<div class="alert alert-info my-5" th:unless="${ingredienti.size() > 0}">
 			<h3>Non è stato inserito alcun ingrediente</h3>
 		</div>
-		<div class="col-6">
+		<div class="">
 			<!-- Inizio Form -->
 			<form id="form-ingredienti" th:object="${newIngredienti}" th:action="@{/ingredienti/save}" method="POST">
 				<input type="hidden" th:field="*{id}">
 				<div class="input-group mb-3 bg-warning">
-				<a class="btn btn-warning">	Aggiungi un nuovo ingrediente &nbsp;</a> 
+					<a class="btn btn-warning"> Aggiungi un nuovo ingrediente &nbsp;</a>
 					<input th:field="*{name}" type="text" class="form-control" th:errorClass="is-invalid">
 					<button class="btn btn-primary" type="submit" id="category-button">Salva</button>
 					<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
@@ -35,15 +35,18 @@
 			</form>
 			<!--  fine form -->
 			<!--  inizio lista  -->
-			<ul class="list-group" th:if="${ingredienti.size() > 0}">
-				<li class="list-group-item" th:each="ing : ${ingredienti}">
-					<span th:text="${ing.name}"></span>
-					<a class="btn btn-warning" th:href="@{|/ingredienti/delete/${ing.id}|}" title="Cancella">
-						<i class="fa-solid fa-trash-can"></i>
-					</a>
-				</li>
-			</ul>
-
+			<div class="container">
+				<div class="flex-container no-wrap">
+					<ul class="list-group" th:if="${ingredienti.size() > 0}">
+						<li class="list-group-item " th:each="ing : ${ingredienti}">
+							<span th:text="${ing.name}"></span>
+							<a class="btn btn-danger" th:href="@{|/ingredienti/delete/${ing.id}|}" title="Cancella">
+								<i class="fa-solid fa-trash-can"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
 			<!-- se la lista è vuota -->
 
 			<!--  fine lista -->
