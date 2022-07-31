@@ -18,5 +18,6 @@ public interface PizzaRepository extends CrudRepository<Pizza, Integer> {
 	public List<Pizza> findAllByOrderByName();
 	public List<Pizza> findByNameContainingIgnoreCase(String queryName);
 	public List<Pizza> findByPriceBetweenOrderByPrice(Double queryMin, Double queryMax);
-	//public List<Pizza> findByIngredienti(List<Ingredienti> queryIngrediente);
+	public List<Pizza> findByIngredientiIn(List <Ingredienti> ingredienti);
+	
 }

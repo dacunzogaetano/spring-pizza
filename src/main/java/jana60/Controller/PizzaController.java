@@ -52,38 +52,40 @@ public class PizzaController {
 	}
 
 	@GetMapping("/search_name")
-	public String searchName (@RequestParam(name = "queryName") String queryName, Model model) {
-			
+	public String searchName(@RequestParam(name = "queryName") String queryName, Model model) {
+
 		if (queryName != null && queryName.isEmpty()) {
-	    	queryName = null;
-	    }
-		
+			queryName = null;
+		}
+
 		List<Pizza> pizze = repo.findByNameContainingIgnoreCase(queryName);
 		model.addAttribute("pizze", pizze);
 		return "/pizza/list";
-		}
-	
+	}
+
 	@GetMapping("/search_price")
-	public String searchPrice (@RequestParam(name = "queryMin", required=false) Double queryMin,
-			@RequestParam(name = "queryMax", required=false) Double queryMax,Model model) {
-		
+	public String searchPrice(@RequestParam(name = "queryMin", required = false) Double queryMin,
+			@RequestParam(name = "queryMax", required = false) Double queryMax,Model model) {
+		if (queryMin > queryMax) {
+			return "no";
+		}
+
 		List<Pizza> pizze = repo.findByPriceBetweenOrderByPrice(queryMin, queryMax);
 		model.addAttribute("pizze", pizze);
 		return "/pizza/list";
+	}
+
+	@GetMapping("/search_ingredienti")
+	public String searchIngredienti(@RequestParam(name = "queryIngrediente") List<Ingredienti> ingredienti,
+			Model model) {
+		if (ingredienti != null && ingredienti.isEmpty()) {
+			ingredienti = null;
 		}
-	
-//	@GetMapping("/search_ingredienti")
-//	public String searchIngredienti (@RequestParam(name = "queryIngrediente") List<Ingredienti> queryIngrediente, Model model) {
-//			
-//		if (queryIngrediente != null && queryIngrediente.isEmpty()) {
-//			queryIngrediente = null;
-//	    }
-//		
-//		List<Pizza> pizze = repo.findByIngredienti(queryIngrediente);
-//		model.addAttribute("pizze", pizze);
-//		return "/pizza/list";
-//		}
-	
+
+		List<Pizza> pizze = repo.findByIngredientiIn(ingredienti);
+		model.addAttribute("pizze", pizze);
+		return "/pizza/list";
+	}
 
 	@GetMapping("/add")
 	public String pizzeForm(Model model) {

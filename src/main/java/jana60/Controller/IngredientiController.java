@@ -1,5 +1,6 @@
 package jana60.Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,8 +28,7 @@ import jana60.Repository.IngredientiRepository;
 public class IngredientiController {
 	
 	@Autowired
-	private IngredientiRepository repo;
-	
+	private IngredientiRepository repo;	
 	
 
 	@GetMapping
@@ -36,6 +37,8 @@ public class IngredientiController {
 		model.addAttribute("newIngredienti", new Ingredienti());
 		return "/ingredienti/list";
 	}
+	
+	
 
 	@PostMapping("/save")
 	public String saveIngredienti(@Valid @ModelAttribute("newIngredienti") Ingredienti formIngredienti, BindingResult br,Model model) {
@@ -65,7 +68,7 @@ public class IngredientiController {
 			// repo.deleteById(ingredientiId);
 			repo.delete(result.get());
 			return "redirect:/ingredienti";
-		} else {
+		} {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Non è stato possibile procedere con l'operazione");
 		}
 

@@ -12,4 +12,5 @@ public interface IngredientiRepository extends CrudRepository<Ingredienti, Integ
 	
 	public Integer countByName(String name); 
 	public List<Ingredienti> findAllByOrderByName();
+
 }
